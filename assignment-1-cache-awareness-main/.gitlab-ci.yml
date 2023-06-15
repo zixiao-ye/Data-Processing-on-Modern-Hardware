@@ -1,0 +1,24 @@
+stages:
+  - build
+  - test
+  - deploy
+
+make:
+  stage: build
+  script:
+    - make tester
+  artifacts:
+    paths:
+      - tester
+    expire_in: 1 hrs
+
+runTest:
+  stage: test
+  script:
+    - timeout -s INT 120s ./tester
+
+checkReport:
+  stage: deploy
+  script:
+    - bash -c '[ -f report.pdf ]'
+
